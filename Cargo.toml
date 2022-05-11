@@ -1,0 +1,31 @@
+[package]
+name = "rusttensorflow"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+plotlib = "0.5.1"
+smartcore = "0.2.0"
+rand_isaac = "0.3.0"
+rand_core = "0.6.3"
+ndarray-npy = "0.8.1"
+ndarray-csv = "0.5.1"
+csv = "1.1.6"
+postgres = "*"
+rand = "0.8.5"
+ndarray = "0.15.4"
+openblas-src = "0.10.4"
+plotters = "0.3.1"
+serde = "1.0.115"
+bincode = "1.3.1"
+ndarray-linalg = { version = "0.14.1", features = ["openblas"] }
+num-traits = "0.2.14"
+libc = "0.2.112"
+random = "0.12.2"
+image = "0.23.14"
+time = "*"
+[[bin]]
+name = "rusttensorflow"
+path = "src/usemodel.rs"
