@@ -199,7 +199,7 @@ dependencies = [
  "libc",
  "num-integer",
  "num-traits",
- "time 0.1.44",
+ "time",
  "winapi",
 ]
 
@@ -1127,15 +1127,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "num_threads"
-version = "0.1.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aba1801fb138d8e85e11d0fc70baf4fe1cdfffda7c6cd34a854905df588e5ed0"
-dependencies = [
- "libc",
-]
-
-[[package]]
 name = "object"
 version = "0.28.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1616,7 +1607,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rusttensorflow"
+name = "rustml"
 version = "0.1.0"
 dependencies = [
  "bincode",
@@ -1638,7 +1629,7 @@ dependencies = [
  "random",
  "serde",
  "smartcore",
- "time 0.3.9",
+ "time",
 ]
 
 [[package]]
@@ -1877,16 +1868,6 @@ dependencies = [
  "libc",
  "wasi 0.10.0+wasi-snapshot-preview1",
  "winapi",
-]
-
-[[package]]
-name = "time"
-version = "0.3.9"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c2702e08a7a860f005826c6815dcac101b19b5eb330c27fe4a5928fec1d20ddd"
-dependencies = [
- "libc",
- "num_threads",
 ]
 
 [[package]]

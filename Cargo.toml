@@ -1,5 +1,5 @@
 [package]
-name = "rusttensorflow"
+name = "rustml"
 version = "0.1.0"
 edition = "2021"
 
@@ -27,5 +27,5 @@ random = "0.12.2"
 image = "0.23.14"
 time = "*"
 [[bin]]
-name = "rusttensorflow"
+name = "rustml"
 path = "src/usemodel.rs"

@@ -4,7 +4,7 @@ use std::io::{Read, Write};
 use ndarray::{arr1, Array, Array1, Axis};
 use num_traits::ToPrimitive;
 use serde::Serialize;
-use smartcore::cluster::dbscan::{DBSCAN, DBSCANParameters};
+use smartcore::cluster::dbscan::{DBSCANParameters, DBSCAN};
 use smartcore::cluster::kmeans::{KMeans, KMeansParameters};
 use smartcore::ensemble::random_forest_classifier::{
     RandomForestClassifier, RandomForestClassifierParameters,
@@ -14,7 +14,10 @@ use smartcore::linear::linear_regression::LinearRegression;
 use smartcore::linear::logistic_regression::LogisticRegression;
 use smartcore::math::distance::euclidian;
 use smartcore::math::distance::euclidian::Euclidian;
-use smartcore::metrics::{accuracy, completeness_score, f1, homogeneity_score, mean_squared_error, recall, roc_auc_score, v_measure_score};
+use smartcore::metrics::{
+    accuracy, completeness_score, f1, homogeneity_score, mean_squared_error, recall, roc_auc_score,
+    v_measure_score,
+};
 use smartcore::model_selection::train_test_split;
 use smartcore::neighbors::knn_classifier::KNNClassifier;
 use smartcore::tree::decision_tree_classifier::{
@@ -82,16 +85,12 @@ fn main() {
         liveness: 0.168,
         valence: 0.435,
         tempo: 87.018,
-        time_signature: 4
+        time_signature: 4,
     };
     let array = track.to_array();
-    let vec = vec!(array);
+    let vec = vec![array];
     let array2d = to_array2(vec.as_slice()).unwrap();
-    let x = DenseMatrix::from_array(
-        1,
-        array2d.len_of(Axis(1)),
-        array2d.as_slice().unwrap(),
-    );
+    let x = DenseMatrix::from_array(1, array2d.len_of(Axis(1)), array2d.as_slice().unwrap());
     let prediction = dt.predict(&x).unwrap();
     println!("{:?}", prediction);
 }
@@ -158,7 +157,7 @@ fn train_dt() -> DecisionTreeClassifier<f64> {
         &y_train,
         DecisionTreeClassifierParameters::default(),
     )
-        .unwrap();
+    .unwrap();
     let predictions = dt.predict(&x_test).unwrap();
     let predict_train = dt.predict(&x_train).unwrap();
 
@@ -175,8 +174,7 @@ fn train_dt() -> DecisionTreeClassifier<f64> {
     let train_f1 = f1(&y_train, &predict_train, 1.0);
     let f1 = vec![(test_f1 * 100.0f64) as i32, (train_f1 * 100.0f64) as i32];
     println!("{:?}", f1);
-    performance_graph("dt_f1.svg", "F1 Score", f1)
-        .expect("Write of f1 graph was not successful");
+    performance_graph("dt_f1.svg", "F1 Score", f1).expect("Write of f1 graph was not successful");
 
     let data = recall(&y_test, &predictions);
 
@@ -204,7 +202,7 @@ fn train_rf() -> RandomForestClassifier<f64> {
         &y_train,
         RandomForestClassifierParameters::default(),
     )
-        .unwrap();
+    .unwrap();
     let predictions = rf.predict(&x_test).unwrap();
     let predict_train = rf.predict(&x_train).unwrap();
     println!("MSE: {}", mean_squared_error(&y_test, &predictions));
@@ -230,8 +228,7 @@ fn train_rf() -> RandomForestClassifier<f64> {
     let compare = f1(&y_train, &predict_train, 1.0);
     let f1 = vec![(data * 100.0f64) as i32, (compare * 100.0f64) as i32];
     println!("{:?}", f1);
-    performance_graph("rf_f1.svg", "F1 Score", f1)
-        .expect("Write of f1 graph was not successful");
+    performance_graph("rf_f1.svg", "F1 Score", f1).expect("Write of f1 graph was not successful");
 
     let data = recall(&y_test, &predictions);
 
@@ -288,8 +285,7 @@ fn train_lir() -> LinearRegression<f64, DenseMatrix<f64>> {
     let compare = f1(&y_train, &predict_train, 1.0);
     let f1 = vec![(data * 100.0f64) as i32, (compare * 100.0f64) as i32];
     println!("{:?}", f1);
-    performance_graph("lin_f1.svg", "F1 Score", f1)
-        .expect("Write of f1 graph was not successful");
+    performance_graph("lin_f1.svg", "F1 Score", f1).expect("Write of f1 graph was not successful");
 
     let data = recall(&y_test, &predict_test);
 
@@ -345,8 +341,7 @@ fn train_lor() -> LogisticRegression<f64, DenseMatrix<f64>> {
 
     let compare = f1(&y_train, &lr.predict(&x_train).unwrap(), 1.0);
     let f1 = vec![(data * 100.0f64) as i32, (compare * 100.0f64) as i32];
-    performance_graph("log_f1.svg", "F1 Score", f1)
-        .expect("Write of f1 graph was not successful");
+    performance_graph("log_f1.svg", "F1 Score", f1).expect("Write of f1 graph was not successful");
 
     let data = recall(&y_test, &predictions);
     let compare = recall(&y_train, &lr.predict(&x_train).unwrap());
@@ -382,7 +377,8 @@ fn kmeans() -> KMeans<f64> {
         &x,
         Some(&predictions.into_iter().map(|f| f as usize).collect()),
         "kmeansclusters",
-    ).expect("couldn't write graph kmeans");
+    )
+    .expect("couldn't write graph kmeans");
 
     kmeans
 }
@@ -406,7 +402,7 @@ fn dbscan() -> DBSCAN<f64, Euclidian> {
             .with_eps(0.2)
             .with_min_samples(7),
     )
-        .unwrap();
+    .unwrap();
     let predictions = dbscan.predict(&x).unwrap();
 
     // Measure performance
@@ -418,7 +414,8 @@ fn dbscan() -> DBSCAN<f64, Euclidian> {
         &x,
         Some(&predictions.into_iter().map(|f| f as usize).collect()),
         "dbscan",
-    ).expect("couldn't write graph dbscan");
+    )
+    .expect("couldn't write graph dbscan");
 
     dbscan
 }
